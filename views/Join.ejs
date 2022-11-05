@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Join Us!</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+    <link href="./styles/styles.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div
+      class="container-lg w-100 h-100 d-flex align-items-center justify-content-center"
+    >
+      <div class="card">
+        <ul class="nav nav-pills nav-fill justify-content-center card-header">
+          <li class="nav-item active">
+            <a class="nav-link active" data-bs-toggle="tab" href="#Login"
+              >Login</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#Register"
+              >Register</a
+            >
+          </li>
+        </ul>
+
+        <div class="tab-content card-body">
+          <div class="tab-pane container active" id="Login">
+            <form method="post" action="/api/login">
+              <div class="form-group">
+                <label for="userEmail">Enter your email:</label>
+                <input
+                  type="email"
+                  id="userEmail"
+                  name="email"
+                  class="form-control"
+                  placeholder="Your Email"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="userPassword">Enter your password:</label>
+                <input
+                  type="password"
+                  id="userPassword"
+                  name="password"
+                  class="form-control"
+                  placeholder="Your Password"
+                  required
+                />
+              </div>
+
+              <input type="submit" class="btn btn-primary" value="Login" />
+            </form>
+          </div>
+          <div class="tab-pane container fade" id="Register">
+            <form method="post" action="/api/register">
+              <div class="form-group">
+                <label for="userName">Enter your name:</label>
+                <input
+                  type="text"
+                  id="userName"
+                  placeholder="Your Name"
+                  name="name"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="userEmail">Enter your email:</label>
+                <input
+                  type="email"
+                  placeholder="Your Email"
+                  id="userEmail"
+                  name="email"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="userPassword">Enter your password:</label>
+                <input
+                  type="password"
+                  id="userPassword"
+                  name="password"
+                  placeholder="Your Password"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="userCountry">Enter your country:</label>
+                <select
+                  class="form-control"
+                  name="country"
+                  id="userCountry"
+                  required
+                >
+                  <% for(let country of countries){ %>
+                  <option value="<%= country.country_id %>">
+                    <%=country.country_name%> (<%= country.country_abbr%>)
+                  </option>
+                  <%}%>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="userDob">Enter your date of birth:</label>
+                <input
+                  type="date"
+                  id="userDob"
+                  name="dob"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group row">
+                <label for="isArtist">Are you an artist?</label>
+                <input
+                  type="checkbox"
+                  id="isArtist"
+                  name="isArtist"
+                  class="form-check"
+                />
+              </div>
+              <div style="display: none" class="form-group">
+                <label for="artistStageName">Enter your stage name:</label>
+                <input
+                  disabled
+                  type="text"
+                  id="artistStageName"
+                  name="stageName"
+                  class="form-control"
+                  placeholder="Your Stage Name"
+                />
+              </div>
+
+              <input class="btn btn-primary" type="submit" value="Sign Up" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const checkbox = document.querySelector('#isArtist');
+      const stageName = document.querySelector('#artistStageName');
+      checkbox.addEventListener('click', (e) => {
+        stageName.parentElement.style.display = e.target.checked
+          ? 'block'
+          : 'none';
+        stageName.disabled = !e.target.checked;
+      });
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+      integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
