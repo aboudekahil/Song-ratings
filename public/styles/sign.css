@@ -1,0 +1,80 @@
+html,
+body {
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../images/bg.png') no-repeat;
+  filter: brightness(0.6);
+  background-size: cover;
+}
+
+.card {
+  background-color: var(--secondary-color);
+  color: white;
+  width: 35%;
+  height: 65%;
+  backdrop-filter: drop-shadow(4px 4px 10px blue);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  z-index: -99;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.nav-link {
+  font-weight: bold;
+}
+
+#Register form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-column-gap: 25px;
+  grid-row-gap: 15px;
+}
+
+.in-1 {
+  grid-area: 1 / 1 / 2 / 2;
+}
+.in-2 {
+  grid-area: 2 / 1 / 3 / 2;
+}
+.in-3 {
+  grid-area: 3 / 1 / 4 / 2;
+}
+.in-4 {
+  grid-area: 4 / 1 / 5 / 2;
+}
+.in-5 {
+  grid-area: 1 / 2 / 2 / 3;
+}
+.in-6 {
+  grid-area: 2 / 2 / 3 / 3;
+}
+.in-7 {
+  grid-area: 4 / 2 / 5 / 3;
+}
+.in-8 {
+  grid-area: 3 / 2 / 4 / 3;
+}
+
+[type='submit'],
+.nav-link.active {
+  width: 100%;
+  background-color: var(--primary-color);
+  color: black;
+}

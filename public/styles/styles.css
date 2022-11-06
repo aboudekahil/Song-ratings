@@ -1,4 +1,14 @@
-body, html {
-  height: 100%;
-  background-color: black;
+:root {
+  --primary-color: #e4b61d;
+  --secondary-color: #121212;
+  --trimary-color: white;
+}
+
+.nav-pills {
+  --bs-nav-pills-link-active-bg: var(--primary-color);
+  --bs-nav-pills-link-active-color: var(--secondary-color);
+}
+
+.nav-link{
+  --bs-nav-link-color: var(--trimary-color);
 }

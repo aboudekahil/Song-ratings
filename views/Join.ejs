@@ -7,13 +7,14 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-
+    <link rel="icon" type="image/x-icon" href="./icon/favicon.ico" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
       crossorigin="anonymous"
     />
+    <link href="./styles/sign.css" rel="stylesheet" />
     <link href="./styles/styles.css" rel="stylesheet" />
   </head>
 
@@ -22,24 +23,12 @@
       class="container-lg w-100 h-100 d-flex align-items-center justify-content-center"
     >
       <div class="card">
-        <ul class="nav nav-pills nav-fill justify-content-center card-header">
-          <li class="nav-item active">
-            <a class="nav-link active" data-bs-toggle="tab" href="#Login"
-              >Login</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#Register"
-              >Register</a
-            >
-          </li>
-        </ul>
-
         <div class="tab-content card-body">
           <div class="tab-pane container active" id="Login">
+            <h2>Sign in</h2>
             <form method="post" action="/api/login">
               <div class="form-group">
-                <label for="userEmail">Enter your email:</label>
+                <label for="userEmail">Email</label>
                 <input
                   type="email"
                   id="userEmail"
@@ -50,7 +39,7 @@
                 />
               </div>
               <div class="form-group">
-                <label for="userPassword">Enter your password:</label>
+                <label for="userPassword">Password</label>
                 <input
                   type="password"
                   id="userPassword"
@@ -60,14 +49,14 @@
                   required
                 />
               </div>
-
               <input type="submit" class="btn btn-primary" value="Login" />
             </form>
           </div>
-          <div class="tab-pane container fade" id="Register">
+          <div class="tab-pane container" id="Register">
+            <h2>Create account</h2>
             <form method="post" action="/api/register">
-              <div class="form-group">
-                <label for="userName">Enter your name:</label>
+              <div class="form-group in-1">
+                <label for="userName">Name</label>
                 <input
                   type="text"
                   id="userName"
@@ -77,8 +66,8 @@
                   required
                 />
               </div>
-              <div class="form-group">
-                <label for="userEmail">Enter your email:</label>
+              <div class="form-group in-2">
+                <label for="userEmail">Email</label>
                 <input
                   type="email"
                   placeholder="Your Email"
@@ -88,8 +77,8 @@
                   required
                 />
               </div>
-              <div class="form-group">
-                <label for="userPassword">Enter your password:</label>
+              <div class="form-group in-3">
+                <label for="userPassword">Password</label>
                 <input
                   type="password"
                   id="userPassword"
@@ -99,8 +88,8 @@
                   required
                 />
               </div>
-              <div class="form-group">
-                <label for="userCountry">Enter your country:</label>
+              <div class="form-group in-4">
+                <label for="userCountry">Country</label>
                 <select
                   class="form-control"
                   name="country"
@@ -114,8 +103,8 @@
                   <%}%>
                 </select>
               </div>
-              <div class="form-group">
-                <label for="userDob">Enter your date of birth:</label>
+              <div class="form-group in-5">
+                <label for="userDob">Date of birth</label>
                 <input
                   type="date"
                   id="userDob"
@@ -124,7 +113,7 @@
                   required
                 />
               </div>
-              <div class="form-group row">
+              <div class="form-group in-6">
                 <label for="isArtist">Are you an artist?</label>
                 <input
                   type="checkbox"
@@ -133,8 +122,8 @@
                   class="form-check"
                 />
               </div>
-              <div style="display: none" class="form-group">
-                <label for="artistStageName">Enter your stage name:</label>
+              <div style="display: none" class="form-group in-8">
+                <label for="artistStageName">Stage name</label>
                 <input
                   disabled
                   type="text"
@@ -145,10 +134,26 @@
                 />
               </div>
 
-              <input class="btn btn-primary" type="submit" value="Sign Up" />
+              <input
+                class="btn btn-primary in-7"
+                type="submit"
+                value="Sign Up"
+              />
             </form>
           </div>
         </div>
+        <ul class="nav nav-pills nav-fill justify-content-center card-header">
+          <li class="nav-item active">
+            <a class="nav-link active" data-bs-toggle="tab" href="#Login"
+              >Login</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#Register"
+              >Register</a
+            >
+          </li>
+        </ul>
       </div>
     </div>
 
