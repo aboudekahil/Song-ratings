@@ -1,4 +1,3 @@
-const connection = require('../config/_database.config');
 const knex = require('../config/knex.config');
 const moment = require('moment');
 
@@ -25,4 +24,35 @@ exports.addAlbum = async (req, res) => {
   });
 
   res.redirect('/');
+};
+
+exports.getAlbum = async (req, res) => {
+  const { id } = req.query;
+
+  if (!id) {
+    res.status(400).send('bad request');
+    return;
+  }
+
+  let album = await knex('albums').where('album_id', id).select('*').first();
+
+  if (!album) {
+    res.status(404).send('album not found');
+    return;
+  }
+
+  let songs = await knex('songs').where('song_in_album', id).select('*');
+
+  let avgStars = (
+    await knex('ratings')
+      .where(
+        'rating_song',
+        'in',
+        songs.map((song) => song.song_id)
+      )
+      .avg('rating_stars as stars')
+      .first()
+  ).stars;
+
+  res.status(200).render('album', { album, songs, avgStars });
 };

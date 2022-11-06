@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./icons/favicon.ico" />
+    <title><%= album.album_name %></title>
+  </head>
+  <body>
+    <div class="d-flex">
+      <div>
+        <img src="" />
+        <p><%=album.album_name%></p>
+        <p><%=album.album_releasedate%></p>
+        <p><%= avgStars %></p>
+      </div>
+      <div>
+        <% if(!songs.length){ %>
+        <h2>No songs in this album yet</h2>
+        <%}%> <% for( let song of songs ) { %>
+        <div>
+          <p><%= song.song_name %></p>
+          <p><%= song.song_length %></p>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </body>
+</html>

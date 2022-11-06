@@ -1,4 +1,3 @@
-const connection = require('../config/_database.config');
 const knex = require('../config/knex.config');
 
 exports.addCountry = async (req, res) => {

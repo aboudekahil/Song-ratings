@@ -1,4 +1,3 @@
-const connection = require('../config/_database.config');
 const moment = require('moment');
 const knex = require('../config/knex.config');
 
@@ -31,14 +30,14 @@ exports.getSong = async (req, res) => {
   const { id } = req.query;
 
   if (!id) {
-    res.status(404).send('bad request');
+    res.status(400).send('bad request');
     return;
   }
 
   let song = await knex('songs').where('song_id', id).select('*').first();
 
   if (!song) {
-    res.status(404).send('unidentified song');
+    res.status(404).send('song not found');
     return;
   }
 
