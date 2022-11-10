@@ -24,8 +24,8 @@
     "express-fileupload": "^1.4.0",
     "knex": "^2.3.0",
     "moment": "^2.29.4",
+    "multer": "^1.4.5-lts.1",
     "mysql2": "^2.3.3",
-    "sqlite3": "^5.1.2",
     "uuid": "^9.0.0"
   }
 }

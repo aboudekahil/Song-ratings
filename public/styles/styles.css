@@ -2,6 +2,8 @@
   --primary-color: #e4b61d;
   --secondary-color: #121212;
   --trimary-color: white;
+  --font-fam: Roboto, Helvetica, Arial, sans-serif;
+  transition: all 0.1s ease-in-out;
 }
 
 .nav-pills {
@@ -9,7 +11,14 @@
   --bs-nav-pills-link-active-color: var(--secondary-color);
 }
 
-.nav-link{
+.nav-link {
   --bs-nav-link-color: var(--trimary-color);
 }
 
+.flipped {
+  transform: rotateZ(180deg);
+}
+
+.hidden {
+  display: none;
+}

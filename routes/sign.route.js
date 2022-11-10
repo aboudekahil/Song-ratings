@@ -7,5 +7,6 @@ router.get('/join', sign.joinPage);
 
 router.post('/api/register', sign.register);
 router.post('/api/login', sign.logIn);
+router.post('/api/signOut', sign.signOut);
 
 module.exports = router;

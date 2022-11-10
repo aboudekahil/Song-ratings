@@ -1,71 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Song Rater</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="./icons/favicon.ico" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
-      crossorigin="anonymous"
-    />
     <link href="./styles/styles.css" rel="stylesheet" />
+    <link href="./styles/home.css" rel="stylesheet" />
+    <title>Song rater</title>
   </head>
-
   <body>
-    <header class="p-3 bg-dark text-white">
-      <div class="container">
-        <div
-          class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
-        >
-          <h3 style="user-select: none" class="me-2">Song rating</h3>
+    <header>
+      <nav>
+        <ul>
+          <li>
+            <a href="/">
+              <img src="./icons/logo.png" />
+            </a>
+          </li>
+          <li>
+            <%if(user) {%>
+            <div class="user">
+              <%= user.user_name %>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                class="ipc-icon ipc-icon--arrow-drop-down navbar__flyout__button-pointer"
+                id="iconContext-arrow-drop-down"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                role="presentation"
+              >
+                <path fill="none" d="M0 0h24v24H0V0z"></path>
+                <path
+                  d="M8.71 11.71l2.59 2.59c.39.39 1.02.39 1.41 0l2.59-2.59c.63-.63.18-1.71-.71-1.71H9.41c-.89 0-1.33 1.08-.7 1.71z"
+                ></path>
+              </svg>
+            </div>
+            <div class="dropdown hidden">
+              <ul>
+                <li>
+                  <a id="profile" href="/p/<%=user.user_name%>">Profile</a>
+                </li>
 
-          <ul
-            class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
-          >
-            <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-            <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-          </ul>
-
-          <div class="text-end">
-            <% if (!user){ %>
-            <a href="/join">
+                <li id="signOut">Sign out</li>
+              </ul>
+            </div>
+            <%} else{%><a href="/join">
               <button type="button" class="btn btn-warning">
                 Login | Sign up
               </button>
             </a>
-            <% }else{ %>
-            <h1><%= user.user_name%></h1>
-            <% } %>
-          </div>
-        </div>
-      </div>
+            <%}%>
+          </li>
+        </ul>
+      </nav>
     </header>
-    <main class="justify-content-center flex-grow-1 align-middle d-flex">
-      <form
-        class="col-12 align-self-center w-50 col-lg-auto mb-3 mb-lg-0 me-lg-3"
-        method="get"
-        action="/query"
-      >
-        <div class="input-group mb-3"> 
-          <span class="input-group-text" id="basic-addon1">
-            <img src="./icons/searchIcon.svg"
-          /></span>
-        </input>
-          <input
-            type="search"
-            class="form-control form-control-dark"
-            placeholder="Search..."
-            aria-label="Search"
-            name="query"
-          />
-        </div>
+    <main>
+      <form method="get" action="/query">
+        <input type="search" name="query" />
       </form>
     </main>
+    <footer></footer>
+    <script defer>
+      let dropdown = document.querySelector('.user');
+
+      dropdown.addEventListener('click', (e) => {
+        // console.log(dropdown.childNodes);
+        dropdown.querySelector('svg').classList.toggle('flipped');
+        document.querySelector('.dropdown').classList.toggle('hidden');
+      });
+
+      document
+        .querySelector('li:last-child')
+        .addEventListener('mouseleave', (e) => {
+          dropdown.querySelector('svg').classList.remove('flipped');
+          document.querySelector('.dropdown').classList.add('hidden');
+        });
+
+      document
+        .querySelector('#signOut')
+        .addEventListener('click', async (e) => {
+          await fetch('/api/signOut', { method: 'POST' });
+          location.reload();
+        });
+    </script>
   </body>
 </html>

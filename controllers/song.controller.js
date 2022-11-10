@@ -41,7 +41,15 @@ exports.getSong = async (req, res) => {
     return;
   }
 
-  let reviews = await knex('ratings').where('rating_song', id).select('*');
+  let reviews = await knex('ratings')
+    .where('rating_song', id)
+    .innerJoin('users', 'users.user_id', 'ratings.rating_user')
+    .select(
+      'user_name',
+      'rating_last_updated',
+      'rating_stars',
+      'rating_review'
+    );
 
   res.status(200).render('song', { song, reviews });
 };

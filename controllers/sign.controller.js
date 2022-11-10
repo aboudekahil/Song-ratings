@@ -51,19 +51,17 @@ exports.register = async (req, res) => {
   let userId, artistId;
 
   try {
-    userId = (
-      await knex('users')
-        .insert({
-          user_email: email,
-          user_name: name,
-          user_password: password,
-          user_country: country,
-          user_is_artist: +isArtistBool,
-          user_dob: moment(dob).format('YYYY-MM-DD'),
-        })
-        .first()
-    ).user_id;
+    userId = await knex('users').insert({
+      user_email: email,
+      user_name: name,
+      user_password: password,
+      user_country: country,
+      user_is_artist: +isArtistBool,
+      user_dob: moment(dob).format('YYYY-MM-DD'),
+    });
+    console.log(userId);
   } catch (err) {
+    console.log(err);
     res.status(403).send('User already exists.');
     return;
   }
@@ -101,4 +99,16 @@ exports.joinPage = async (req, res) => {
 
   let countries = await knex('countries').select();
   res.render('join', { countries: countries });
+};
+
+exports.signOut = async (req, res) => {
+  if (!req.cookies.uid) {
+    res.status(403).send('bad request');
+    return;
+  }
+
+  res.clearCookie('uid');
+  res.clearCookie('sid');
+  res.status(200).send('OK');
+  res.end();
 };

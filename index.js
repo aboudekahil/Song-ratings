@@ -8,6 +8,37 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const knex = require('./config/knex.config');
+const multer = require('multer');
+
+// File upload config
+// ----------------------------------------------------------------------------
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, 'public/uploads'));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(
+      null,
+      file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (!(path.extname(file.originalname) in ['png', 'jpg', 'jpeg']))
+      return cb(new Error('Only images are allowed'));
+
+    cb(null, true);
+  },
+
+  limits: {
+    fileSize: 1024 * 1024,
+  },
+});
 
 // Server configuration
 // ----------------------------------------------------------------------------
@@ -41,6 +72,10 @@ app.get('/', async (req, res) => {
   )[0];
 
   res.status(200).render('homepage', { user });
+});
+
+app.post('/upload', upload.single('avatar'), (req, res) => {
+  // console.log(req.file);
 });
 
 // Server run

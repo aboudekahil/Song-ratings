@@ -37,7 +37,10 @@
         <p>no reviews</p>
         <%}%> <% for (let review of reviews) { %>
         <div>
-          <p><%= review.rating_user %> - <%= review.rating_last_updated %></p>
+          <p>
+            <a href="/p/<%=review.user_name%>"><%= review.user_name %></a> - <%=
+            review.rating_last_updated %>
+          </p>
           <small><%= review.rating_stars %> / 5</small>
           <p><%= review.rating_review %></p>
         </div>
