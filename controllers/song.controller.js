@@ -1,5 +1,6 @@
 const moment = require('moment');
 const knex = require('../config/knex.config');
+const getLoggedUser = require('../utils/getLoggedUser');
 const toMMSS = require('../utils/toMMSS');
 
 exports.updateSong = async (req, res) => {
@@ -84,14 +85,15 @@ exports.getSong = async (req, res) => {
   });
 
   let userReview = reviews.find((r) => r.user_id === parseInt(req.cookies.uid));
-  res
-    .status(200)
-    .render('song', {
-      song,
-      reviews,
-      userReview,
-      isLoggedIn: !!req.cookies.uid,
-    });
+  let user = await getLoggedUser(req);
+
+  res.status(200).render('song', {
+    song,
+    reviews,
+    userReview,
+    isLoggedIn: !!req.cookies.uid,
+    user,
+  });
 };
 
 exports.addSong = async (req, res) => {
