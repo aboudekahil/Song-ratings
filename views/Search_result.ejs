@@ -57,9 +57,13 @@
           <h1>Artists</h1>
           <% for(let artist of results.artists) { %>
           <div>
-            <h1><%=artist.artist_stagename%></h1>
+            <h1>
+              <a href="/artists/<%=artist.artist_stagename%>"
+                ><%=artist.artist_stagename%></a
+              >
+            </h1>
             <h2>
-              <a href="/profile/<%=artist.user_name%>"><%=artist.user_name%></a>
+              <a href="/profiles/<%=artist.user_name%>"><%=artist.user_name%></a>
             </h2>
           </div>
           <%}%>

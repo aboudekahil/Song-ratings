@@ -1,7 +1,7 @@
 <header>
   <nav>
     <ul>
-      <li>
+      <li style="user-select: none;">
         <a href="/">
           <img src="/icons/logo.png" />
         </a>
@@ -29,7 +29,10 @@
         <div class="dropdown hidden">
           <ul>
             <li>
-              <a id="profile" href="/profile/<%=user.user_name%>">Profile</a>
+              <a href="/profiles/<%=user.user_name%>">Profile</a>
+            </li>
+            <li id="editProfile">
+              <a href="/editProfile">Edit Profile</a>
             </li>
 
             <li id="signOut">Sign out</li>

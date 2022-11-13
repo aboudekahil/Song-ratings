@@ -56,7 +56,7 @@ exports.getAlbum = async (req, res) => {
   }
 
   album.album_releasedate = moment(album.album_releasedate).format(
-    'DD/MM/YYYY'
+    'YYYY-MM-DD'
   );
 
   let songs = await knex('songs')

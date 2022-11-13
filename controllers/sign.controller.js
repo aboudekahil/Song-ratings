@@ -4,27 +4,25 @@ const knex = require('../config/knex.config');
 exports.logIn = async (req, res) => {
   const { email, password } = req.body;
 
-  let userId = (
-    await knex('users')
-      .where('user_email', email)
-      .andWhere('user_password', password)
-      .select('user_id')
-      .first()
-  ).user_id;
+  let user = await knex('users')
+    .where('user_email', email)
+    .andWhere('user_password', password)
+    .select('user_id', 'user_is_artist')
+    .first();
 
-  if (!userId) {
+  if (!user) {
     res.status(404).send('user not found');
     return;
   }
 
-  let artistId = (
-    await knex('artists')
-      .where('artist_user_email', email)
-      .select('artist_id')
-      .first()
-  ).artist_id;
+  if (user.user_is_artist) {
+    let artistId = (
+      await knex('artists')
+        .where('artist_user_email', email)
+        .select('artist_id')
+        .first()
+    ).artist_id;
 
-  if (artistId) {
     res.cookie('sid', artistId, {
       expire: moment().add(1, 'y'),
       secure: true,
@@ -33,7 +31,7 @@ exports.logIn = async (req, res) => {
     });
   }
 
-  res.cookie('uid', userId, {
+  res.cookie('uid', user.user_id, {
     expire: moment().add(1, 'y'),
     secure: true,
     httpOnly: true,
@@ -96,7 +94,7 @@ exports.joinPage = async (req, res) => {
     return;
   }
 
-  let countries = await knex('countries').select();
+  let countries = await knex('countries').select('*');
   res.render('join', { countries: countries });
 };
 

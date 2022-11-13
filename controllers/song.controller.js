@@ -58,7 +58,7 @@ exports.getSong = async (req, res) => {
     )
     .first();
 
-  song.song_releasedate = moment(song.song_releasedate).format('DD/MMM/YYYY');
+  song.song_releasedate = moment(song.song_releasedate).format('YYYY-MM-DD');
   song.song_length = toMMSS(song.song_length);
 
   if (!song) {
@@ -80,7 +80,7 @@ exports.getSong = async (req, res) => {
 
   reviews.forEach((review) => {
     review.rating_last_updated = moment(review.rating_last_updated).format(
-      'DD/MMM/YYYY'
+      'YYYY-MM-DD'
     );
   });
 

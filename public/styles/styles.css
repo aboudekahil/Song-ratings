@@ -104,6 +104,7 @@ li:last-child .user:active {
   background-color: rgb(44, 42, 42);
   padding: 10px;
   border-radius: 5px;
+  right: 10px;
 }
 
 .dropdown ul {
@@ -146,7 +147,7 @@ button:active {
   filter: brightness(0.8);
 }
 
-#profile {
+.dropdown ul li a {
   display: block;
   text-decoration: none;
   color: white;
