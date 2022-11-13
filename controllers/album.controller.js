@@ -3,7 +3,7 @@ const moment = require('moment');
 const toMMSS = require('../utils/toMMSS');
 const getLoggedUser = require('../utils/getLoggedUser');
 
-exports.updateAlbum = async (req, res) => {
+exports.updateAnAlbum = async (req, res) => {
   const { name, releaseDate } = req.body;
 
   await knex('albums')
@@ -13,10 +13,17 @@ exports.updateAlbum = async (req, res) => {
       album_releasedate: moment(releaseDate).format('YYYY-MM-DD'),
     });
 
-  res.redirect('/');
+  let artist = (
+    await knex('artists')
+      .where('artist_id', req.cookies.sid)
+      .select('artist_stagename')
+      .first()
+  ).artist_stagename;
+
+  res.redirect(`/artists/${artist}`);
 };
 
-exports.addAlbum = async (req, res) => {
+exports.addAnAlbum = async (req, res) => {
   const { name, releaseDate } = req.body;
 
   await knex('albums').insert({
@@ -25,7 +32,14 @@ exports.addAlbum = async (req, res) => {
     album_artist: req.cookies.sid,
   });
 
-  res.redirect('/');
+  let artist = (
+    await knex('artists')
+      .where('artist_id', req.cookies.sid)
+      .select('artist_stagename')
+      .first()
+  ).artist_stagename;
+
+  res.redirect(`/artists/${artist}`);
 };
 
 exports.getAlbum = async (req, res) => {
@@ -81,4 +95,43 @@ exports.getAlbum = async (req, res) => {
   let user = await getLoggedUser(req);
 
   res.status(200).render('album', { album, songs, avgStars, user });
+};
+
+exports.addAlbum = async (req, res) => {
+  if (!req.cookies.sid) {
+    res.status(403).send('forbidden request, you are not an artist');
+    return;
+  }
+  let user = await getLoggedUser(req);
+  res.render('add_album', { user, isUpdate: false });
+};
+
+exports.deleteAlbum = async (req, res) => {
+  if (!req.cookies.sid) {
+    res.status(403).send('forbidden request, you are not an artist');
+    return;
+  }
+
+  let { albumId } = req.body;
+
+  await knex('albums').where('album_id', albumId).del();
+  res.end();
+};
+
+exports.updateAlbum = async (req, res) => {
+  if (!req.cookies.sid) {
+    res.status(403).send('forbidden request, you are not an artist');
+    return;
+  }
+
+  let { id } = req.query;
+
+  let album = await knex('albums').where('album_id', id).select('*').first();
+  album.album_releasedate = moment(album.album_releasedate).format(
+    'YYYY-MM-DD'
+  );
+
+  let user = await getLoggedUser(req);
+
+  res.render('add_album', { user, isUpdate: true, album });
 };

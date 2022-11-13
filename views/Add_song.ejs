@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./icon/favicon.ico" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+    <link href="/styles/styles.css" rel="stylesheet" />
+    <title>Add your song!</title>
+  </head>
+  <body>
+    <%-include('header', {user})%>
+    <main>
+      <form method="post" action="/api/<%=isUpdate?"updateSong":"addSong"%>">
+        <div class="form-group">
+          <label for="song_name">Title</label>
+          <input
+            id="song_name"
+            name="name"
+            class="form-control"
+            type="text"
+            value="<%=isUpdate?`${song.song_name}`:""%>"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="song_length">Length</label>
+          <input
+            id="song_length"
+            name="length"
+            class="form-control"
+            type="number"
+            <%=isUpdate?`value=${song.song_length}`:""%>
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="song_album">Album</label>
+          <select class="form-control" name="album" id="song_album">
+            <option value=""></option>
+            <% for (let album of albums) { %>
+            <option <%=isUpdate && (album.album_id === song.song_in_album)?`selected`:""%> value="<%= album.album_id %>"><%= album.album_name%></option>
+            <%}%>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="song_release">Release date</label>
+          <input
+            name="releaseDate"
+            id="song_release"
+            class="form-control"
+            type="date"
+            <%=isUpdate?`value=${song.song_releasedate}`:""%>
+            required
+          />
+        </div>
+        <input
+          value="<%=isUpdate?"Update song":"Add song"%>"
+          type="submit"
+          class="form-control btn btn-primary"
+        />
+      </form>
+    </main>
+  </body>
+</html>

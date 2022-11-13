@@ -5,12 +5,100 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/styles/styles.css" rel="stylesheet" />
+    <link href="/styles/artist.css" rel="stylesheet" />
     <title><%= artist.artist_stagename%></title>
   </head>
+
   <body>
     <%-include('header', {user})%>
     <main>
-      <h1><%=artist.artist_stagename%></h1>
+      <div class="artistHeader">
+        <h1><%=artist.artist_stagename%> discography</h1>
+        <%if(isThisArtist){%>
+        <div>
+          <a href="/addSong">Add Song</a>
+          <a href="/addAlbum">Add Album</a>
+        </div>
+        <%}%>
+      </div>
+      <div>
+        <div>
+          <h2>Songs</h2>
+          <ul>
+            <% for(song of songs) {%>
+            <li>
+              <a
+                href="/artists/<%=artist.artist_stagename%>/songs/<%=song.song_name%>"
+                ><%=song.song_name%></a
+              >
+              <%if(isThisArtist){%>
+              <a href="/updateSong?id=<%=song.song_id%>"><button>Update</button></a>
+              <button data-id="<%=song.song_id%>" class="delS">Delete</button>
+              <%}%>
+            </li>
+            <%}%>
+          </ul>
+        </div>
+        <div>
+          <h2>Albums</h2>
+          <ul>
+            <% for(album of albums) {%>
+            <li>
+              <a
+                href="/artists/<%=artist.artist_stagename%>/albums/<%=album.album_name%>"
+                ><%=album.album_name%></a
+              >
+              <%if(isThisArtist){%>
+              <a href="/updateAlbum?id=<%=album.album_id%>"><button>Update</button></a>
+              <button data-id="<%=album.album_id%>" class="delA">Delete</button>
+              <%}%>
+            </li>
+            <%}%>
+          </ul>
+        </div>
+      </div>
     </main>
+    <script defer>
+      let delS = (e) => {
+        (async () => {
+          const rawResponse = await fetch('/api/deleteSong', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              songId: e.target.dataset.id,
+            }),
+          });
+        })();
+
+        location.reload();
+      };
+
+      let delA = (e) => {
+        (async () => {
+          const rawResponse = await fetch('/api/deleteAlbum', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              albumId: e.target.dataset.id,
+            }),
+          });
+        })();
+
+        location.reload();
+      };
+
+      document.querySelectorAll('.delS').forEach((button) => {
+        button.addEventListener('click', delS);
+      });
+      document.querySelectorAll('.delA').forEach((button) => {
+        button.addEventListener('click', delA);
+      });
+    </script>
   </body>
 </html>

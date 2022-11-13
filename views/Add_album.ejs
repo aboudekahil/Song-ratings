@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./icon/favicon.ico" />
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+    crossorigin="anonymous"
+    />
+    <link href="/styles/styles.css" rel="stylesheet" />
+    <title>Add your album!</title>
+  </head>
+  <body>
+    <%-include('header', {user})%>
+    <main>
+      <form method="post" action="/api/<%isUpdate?"updateAlbum":"addAlbum"%>">
+        <div class="form-group">
+          <label for="album_name">Title</label>
+          <input
+            id="album_name"
+            name="name"
+            class="form-control"
+            type="text"
+            value="<%=isUpdate?`${album.album_name}`:""%>"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="album_release">Release date</label>
+          <input
+            name="releaseDate"
+            id="album_release"
+            class="form-control"
+            type="date"
+            value="<%=isUpdate?`${album.album_releasedate}`:""%>"
+            required
+          />
+        </div>
+        <input
+          value="<%=isUpdate?"Update Album":"Add Album"%>"
+          type="submit"
+          class="form-control btn btn-primary"
+        />
+      </form>
+    </main>
+  </body>
+</html>

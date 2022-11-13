@@ -13,8 +13,7 @@
 
 <body>
   <%-include('header', {user})%>
-  <main>
-    <div class="d-flex">
+  <main class="d-flex">
       <div>
         <img src="" />
         <h3><%= song.song_name %> - <a href="/artists/<%= song.artist_stagename %>"><%= song.artist_stagename %></a></h3>
@@ -22,16 +21,18 @@
         <br />
         <time datetime="<%= song.song_releasedate%>"><%=song.song_releasedate %></time>
         <%if(song.album_name){ %>
-        <h4><%= song.album_name %></h4>
+        <h4><a href="/artists/<%= song.artist_stagename %>/albums/<%= song.album_name %>"><%= song.album_name %></a></h4>
         <%}%>
       </div>
       <div>
         <% if (!reviews.length) {%>
         <p>no reviews</p>
         <%}%> <% for (let review of reviews) { %>
-        <div>
+        <div class="review">
           <p>
-            <a href="/profiles/<%=review.user_name%>"><%= review.user_name %></a> - <%=
+            <%if(review.user_name){%>
+            <a href="/profiles/<%=review.user_name%>"><%= review.user_name %></a>
+            <%}else{%>[deleted]<%}%> - <%=
               review.rating_last_updated %>
           </p>
           <small><%= review.rating_stars %> / 5</small>
@@ -49,12 +50,12 @@
           <input type="hidden" name="song" id="song" value="<%= song.song_id %>" class="form-control" />
           <%}%>
       <div class="form-group">
-        <label for="star">Rate (<%=userReview.rating_stars ?? 0%>/5)</label>
-          <input id="star" name="stars" type="range" min="0" max="5" value="<%=userReview.rating_stars ?? 0%>" class="form-range" />
+        <label for="star">Rate (<%=!!userReview? userReview.rating_stars : 0%>/5)</label>
+          <input id="star" name="stars" type="range" min="0" max="5" value="<%=!!userReview? userReview.rating_stars : 0%>" class="form-range" />
       </div>
       <div class="form-group">
         <label for="review">Review</label>
-        <textarea id="review" form="reviewForm" name="review" class="form-control"><%=userReview.rating_review ?? ''%></textarea>
+        <textarea id="review" form="reviewForm" name="review" class="form-control"><%=userReview?userReview.rating_review : ''%></textarea>
       </div>
       <input class="form-control btn btn-primary" value="<%=!!userReview?"Update review":"Add a review" %>" type="submit" />
       </form>
@@ -64,7 +65,6 @@
       <%}%>
     </div>
     <%}%>
-    </div>
   </main>
   <script defer>
     document.querySelector('input[type="range"]').addEventListener('input', (e) => {

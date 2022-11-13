@@ -3,19 +3,39 @@ const knex = require('../config/knex.config');
 const getLoggedUser = require('../utils/getLoggedUser');
 const toMMSS = require('../utils/toMMSS');
 
-exports.updateSong = async (req, res) => {
-  const { name, length, album } = req.body;
+exports.updateASong = async (req, res) => {
+  if (!req.cookies.sid) {
+    res.status(403).send('Forbidden request you are not an artist');
+    return;
+  }
 
-  await knex('songs').where('song_artist', req.cookies.sid).update({
-    song_name: name,
-    song_length: length,
-    song_album: album,
-  });
+  const { name, length, album, releaseDate } = req.body;
 
-  res.redirect('/');
+  await knex('songs')
+    .where('song_artist', req.cookies.sid)
+    .update({
+      song_name: name,
+      song_length: length,
+      song_in_album: album || null,
+      song_releasedate: moment(releaseDate).format('YYYY-MM-DD'),
+    });
+
+  let artist = (
+    await knex('artists')
+      .where('artist_id', req.cookies.sid)
+      .select('artist_stagename')
+      .first()
+  ).artist_stagename;
+
+  res.redirect(`/artists/${artist}`);
 };
 
 exports.addASong = async (req, res) => {
+  if (!req.cookies.sid) {
+    res.status(403).send('Forbidden request you are not an artist');
+    return;
+  }
+
   const { name, length, album, releaseDate } = req.body;
   await knex('songs').insert({
     song_name: name,
@@ -25,7 +45,14 @@ exports.addASong = async (req, res) => {
     song_releasedate: moment(releaseDate).format('YYYY-MM-DD'),
   });
 
-  res.redirect('/');
+  let artist = (
+    await knex('artists')
+      .where('artist_id', req.cookies.sid)
+      .select('artist_stagename')
+      .first()
+  ).artist_stagename;
+
+  res.redirect(`/artists/${artist}`);
 };
 
 exports.getSong = async (req, res) => {
@@ -68,7 +95,7 @@ exports.getSong = async (req, res) => {
 
   let reviews = await knex('ratings')
     .where('rating_song', song.song_id)
-    .innerJoin('users', 'users.user_id', 'ratings.rating_user')
+    .leftJoin('users', 'users.user_id', 'ratings.rating_user')
     .select(
       'user_id',
       'user_name',
@@ -106,5 +133,40 @@ exports.addSong = async (req, res) => {
     .where('album_artist', req.cookies.sid)
     .select('album_id', 'album_name');
 
-  res.status(200).render('add_song', { albums });
+  let user = await getLoggedUser(req);
+
+  res.status(200).render('add_song', { user, albums, isUpdate: false });
+};
+
+exports.deleteSong = async (req, res) => {
+  if (!req.cookies.sid) {
+    res.status(403).send('forbidden request, you are not an artist');
+    return;
+  }
+
+  let { songId } = req.body;
+
+  await knex('songs').where('song_id', songId).del();
+  res.end();
+};
+
+exports.updateSong = async (req, res) => {
+  if (!req.cookies.sid) {
+    res.status(403).send('forbidden request, you are not an artist');
+    return;
+  }
+
+  let { id } = req.query;
+
+  let song = await knex('songs').where('song_id', id).select('*').first();
+
+  song.song_releasedate = moment(song.song_releasedate).format('YYYY-MM-DD');
+
+  let albums = await knex('albums')
+    .where('album_artist', req.cookies.sid)
+    .select('album_id', 'album_name');
+
+  let user = await getLoggedUser(req);
+
+  res.status(200).render('add_song', { user, albums, isUpdate: true, song });
 };

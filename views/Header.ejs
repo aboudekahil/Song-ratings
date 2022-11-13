@@ -35,6 +35,12 @@
               <a href="/editProfile">Edit Profile</a>
             </li>
 
+            <%if(parseInt(user.user_is_artist)){%>
+              <li>
+                <a href="/artists/<%=user.artist_stagename%>">Artist Profile</a>
+              </li>
+              <%}%>
+
             <li id="signOut">Sign out</li>
           </ul>
         </div>

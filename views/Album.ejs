@@ -22,7 +22,7 @@
             >
           </p>
           <p><%=album.album_releasedate%></p>
-          <p><%= avgStars %></p>
+          <p><%= parseFloat(avgStars).toFixed(2) %>/5</p>
         </div>
         <div>
           <% if(!songs.length){ %>

@@ -11,5 +11,24 @@ exports.getArtist = async (req, res) => {
 
   let user = await getLoggedUser(req);
 
-  res.render('artist', { user, artist });
+  let songs = await knex('songs')
+    .where('song_artist', artist.artist_id)
+    .select('*');
+
+  let albums = await knex('albums')
+    .where('album_artist', artist.artist_id)
+    .select('*');
+
+  let isThisArtist = artist.artist_id === parseInt(req.cookies.sid);
+
+  res.render(
+    'artist',
+    {
+      user,
+      artist,
+      songs,
+      albums,
+      isThisArtist,
+    }
+  );
 };
