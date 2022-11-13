@@ -7,3 +7,17 @@ body div {
   height: 100vh;
   border: 1px solid black;
 }
+
+.twitter-share-button{
+  background-color: #0b5ed7;
+  color: var(--trimary-color);
+  text-decoration: none;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 100px;
+  flex: 1;
+}
+
+.twitter-share-button:hover{
+  color: black;
+}

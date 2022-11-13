@@ -5,6 +5,6 @@ const review = require('../controllers/review.controller');
 
 router.post('/api/addReview', review.addReview);
 
-router.put('/api/updateReview', review.updateReview);
+router.post('/api/updateReview', review.updateReview);
 
 module.exports = router;

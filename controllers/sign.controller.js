@@ -59,9 +59,8 @@ exports.register = async (req, res) => {
       user_is_artist: +isArtistBool,
       user_dob: moment(dob).format('YYYY-MM-DD'),
     });
-    console.log(userId);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(403).send('User already exists.');
     return;
   }

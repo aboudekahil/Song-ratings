@@ -7,8 +7,8 @@ const path = require('path');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const knex = require('./config/knex.config');
 const multer = require('multer');
+const getLoggedUser = require('./utils/getLoggedUser');
 
 // File upload config
 // ----------------------------------------------------------------------------
@@ -63,20 +63,14 @@ routes.forEach((route) => {
 // ----------------------------------------------------------------------------
 
 app.get('/', async (req, res) => {
-  if (!req.cookies.uid) {
-    res.status(200).render('homepage', { user: 0 });
-    return;
-  }
-  let user = (
-    await knex('users').where('user_id', req.cookies.uid).select('*')
-  )[0];
+  let user = await getLoggedUser(req);
 
   res.status(200).render('homepage', { user });
 });
 
-app.post('/upload', upload.single('avatar'), (req, res) => {
-  // console.log(req.file);
-});
+// app.post('/upload', upload.single('avatar'), (req, res) => {
+//   // console.log(req.file);
+// });
 
 // Server run
 // ----------------------------------------------------------------------------

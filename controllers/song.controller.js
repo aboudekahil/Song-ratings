@@ -1,10 +1,11 @@
 const moment = require('moment');
 const knex = require('../config/knex.config');
+const toMMSS = require('../utils/toMMSS');
 
 exports.updateSong = async (req, res) => {
-  const { id, name, length, album } = req.body;
+  const { name, length, album } = req.body;
 
-  await knex('songs').where('song_id', id).update({
+  await knex('songs').where('song_artist', req.cookies.sid).update({
     song_name: name,
     song_length: length,
     song_album: album,
@@ -27,14 +28,37 @@ exports.addASong = async (req, res) => {
 };
 
 exports.getSong = async (req, res) => {
-  const { id } = req.query;
+  const { artistName, songName } = req.params;
 
-  if (!id) {
-    res.status(400).send('bad request');
+  let artistId = await knex('artists')
+    .select('artist_id')
+    .where('artist_stagename', artistName)
+    .first();
+
+  if (!artistId) {
+    res.status(404).send('artist not found');
     return;
   }
 
-  let song = await knex('songs').where('song_id', id).select('*').first();
+  artistId = artistId.artist_id;
+
+  let song = await knex('songs')
+    .innerJoin('artists', 'artists.artist_id', '=', 'songs.song_artist')
+    .leftJoin('albums', 'albums.album_id', '=', 'songs.song_in_album')
+    .where('song_name', songName)
+    .andWhere('song_artist', artistId)
+    .select(
+      'song_id',
+      'song_name',
+      'song_length',
+      'song_releasedate',
+      'artist_stagename',
+      'album_name'
+    )
+    .first();
+
+  song.song_releasedate = moment(song.song_releasedate).format('DD/MMM/YYYY');
+  song.song_length = toMMSS(song.song_length);
 
   if (!song) {
     res.status(404).send('song not found');
@@ -42,16 +66,32 @@ exports.getSong = async (req, res) => {
   }
 
   let reviews = await knex('ratings')
-    .where('rating_song', id)
+    .where('rating_song', song.song_id)
     .innerJoin('users', 'users.user_id', 'ratings.rating_user')
     .select(
+      'user_id',
       'user_name',
+      'rating_id',
       'rating_last_updated',
       'rating_stars',
       'rating_review'
     );
 
-  res.status(200).render('song', { song, reviews });
+  reviews.forEach((review) => {
+    review.rating_last_updated = moment(review.rating_last_updated).format(
+      'DD/MMM/YYYY'
+    );
+  });
+
+  let userReview = reviews.find((r) => r.user_id === parseInt(req.cookies.uid));
+  res
+    .status(200)
+    .render('song', {
+      song,
+      reviews,
+      userReview,
+      isLoggedIn: !!req.cookies.uid,
+    });
 };
 
 exports.addSong = async (req, res) => {

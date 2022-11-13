@@ -5,14 +5,15 @@ exports.updateReview = async (req, res) => {
   const { id, stars, review } = req.body;
 
   await knex('ratings')
-    .where('rating_id', '=', id)
+    .where('rating_user', req.cookies.uid)
+    .andWhere('rating_id', id)
     .update({
       rating_stars: stars,
       rating_review: review,
-      ratings_last_updated: moment().format('YYYY-MM-DD'),
+      rating_last_updated: moment().format('YYYY-MM-DD HH:mm:ss'),
     });
 
-  res.redirect('/');
+  res.redirect('back');
 };
 
 exports.addReview = async (req, res) => {
@@ -33,5 +34,5 @@ exports.addReview = async (req, res) => {
     rating_last_updated: moment().format('YYYY-MM-DD'),
   });
 
-  res.redirect('.');
+  res.redirect('back');
 };

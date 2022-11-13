@@ -1,0 +1,66 @@
+<header>
+  <nav>
+    <ul>
+      <li>
+        <a href="/">
+          <img src="/icons/logo.png" />
+        </a>
+      </li>
+      <li>
+        <%if(user) {%>
+        <div class="user">
+          <%= user.user_name %>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            class="ipc-icon ipc-icon--arrow-drop-down navbar__flyout__button-pointer"
+            id="iconContext-arrow-drop-down"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            role="presentation"
+          >
+            <path fill="none" d="M0 0h24v24H0V0z"></path>
+            <path
+              d="M8.71 11.71l2.59 2.59c.39.39 1.02.39 1.41 0l2.59-2.59c.63-.63.18-1.71-.71-1.71H9.41c-.89 0-1.33 1.08-.7 1.71z"
+            ></path>
+          </svg>
+        </div>
+        <div class="dropdown hidden">
+          <ul>
+            <li>
+              <a id="profile" href="/profile/<%=user.user_name%>">Profile</a>
+            </li>
+
+            <li id="signOut">Sign out</li>
+          </ul>
+        </div>
+        <%} else{%><a href="/join">
+          <button type="button" class="btn btn-warning">Login | Sign up</button>
+        </a>
+        <%}%>
+      </li>
+    </ul>
+  </nav>
+</header>
+<script defer>
+  let dropdown = document.querySelector('.user');
+
+  dropdown.addEventListener('click', (e) => {
+    // console.log(dropdown.childNodes);
+    dropdown.querySelector('svg').classList.toggle('flipped');
+    document.querySelector('.dropdown').classList.toggle('hidden');
+  });
+
+  document
+    .querySelector('li:last-child')
+    .addEventListener('mouseleave', (e) => {
+      dropdown.querySelector('svg').classList.remove('flipped');
+      document.querySelector('.dropdown').classList.add('hidden');
+    });
+
+  document.querySelector('#signOut').addEventListener('click', async (e) => {
+    await fetch('/api/signOut', { method: 'POST' });
+    location.reload();
+  });
+</script>

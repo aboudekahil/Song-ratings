@@ -5,10 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="./icons/favicon.ico" />
+    <link href="/styles/styles.css" rel="stylesheet" />
     <title><%=user.user_name%></title>
   </head>
+
   <body>
-    <h1><%= user.user_name%></h1>
-    <h2><%= user.user_email%></h2>
+    <%-include('header', user) %>
+    <main>
+      <h1><%= user.user_name%></h1>
+      <h2><%= user.user_email%></h2>
+    </main>
   </body>
 </html>

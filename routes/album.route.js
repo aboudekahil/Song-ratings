@@ -3,7 +3,7 @@ var router = express.Router();
 
 const album = require('../controllers/album.controller');
 
-router.get('/album', album.getAlbum);
+router.get('/artists/:artistName/albums/:albumName', album.getAlbum);
 router.post('/api/addAlbum', album.addAlbum);
 router.put('/api/updateAlbum', album.updateAlbum);
 

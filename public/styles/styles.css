@@ -6,6 +6,16 @@
   transition: all 0.1s ease-in-out;
 }
 
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  background-color: black;
+  color: var(--trimary-color);
+  font-family: var(--font-fam);
+}
+
 .nav-pills {
   --bs-nav-pills-link-active-bg: var(--primary-color);
   --bs-nav-pills-link-active-color: var(--secondary-color);
@@ -21,4 +31,147 @@
 
 .hidden {
   display: none;
+}
+
+input[type='search'] {
+  border: none;
+  border-radius: 50px;
+  width: 50%;
+  height: 5vh;
+}
+
+/* Header styling */
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: var(--secondary-color);
+}
+
+header nav {
+  width: 100%;
+}
+
+ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  width: 100px;
+  margin: 5px;
+}
+
+li {
+  float: left;
+  margin: 0 20px;
+}
+
+li:last-child {
+  margin-left: auto;
+  text-transform: capitalize;
+  order: 2;
+  user-select: none;
+}
+
+li:last-child .user {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  font-weight: bold;
+}
+
+li:last-child .user:hover {
+  backdrop-filter: brightness(0.2);
+  /* background-color: red; */
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+li:last-child .user:active {
+  backdrop-filter: brightness(0.4);
+}
+
+.dropdown {
+  position: absolute;
+  background-color: rgb(44, 42, 42);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.dropdown ul {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.dropdown ul li {
+  padding: 10px;
+  cursor: pointer;
+  border-top: 1px white;
+  width: 100%;
+  margin: 0 20px;
+}
+
+.dropdown ul li:hover {
+  background-color: #181818;
+}
+
+button {
+  font-family: var(--font-fam);
+  background-color: var(--primary-color);
+  outline: none;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: var(--secondary-color);
+  text-transform: capitalize;
+  font-size: large;
+  font-weight: bold;
+}
+
+button:hover {
+  filter: brightness(1.1);
+}
+
+button:active {
+  filter: brightness(0.8);
+}
+
+#profile {
+  display: block;
+  text-decoration: none;
+  color: white;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/*Scroll wheel */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--secondary-color);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-color);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

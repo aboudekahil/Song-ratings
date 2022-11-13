@@ -1,13 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-html,
 body {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  background-color: black;
-  color: var(--trimary-color);
-  font-family: var(--font-fam);
+  display: flex;
+  flex-direction: column;
 }
 
 header {
@@ -117,4 +112,20 @@ button:active {
   margin: 0;
   padding: 0;
   width: 100%;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  overflow: hidden;
+  width: 100vw;
+}
+
+main form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
